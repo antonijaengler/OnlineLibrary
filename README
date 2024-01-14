@@ -1,3 +1,5 @@
+REST aplikacija Online Library u sklopu predmeta Arhitektura protokoli i usluge weba na Fakultetu elektrotehnike i računarstva.
+
 Pokretanje aplikacije: node . (npm start)
 Nakon toga se kopira link na kojem se vrti aplikacija. 
 Automatizirano testiranje: npm test
