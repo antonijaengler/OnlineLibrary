@@ -1,0 +1,625 @@
+{
+    "openapi":"3.0.0",
+    "info": {
+      "title": "Online Library API",
+      "version": "1.0.0",
+      "description": "Documentation for the Book Library API"
+    },
+    "servers": [{
+        "url":"http://localhost:8000/api"
+    }],
+    "tags": [
+        {
+            "name":"home",
+            "description": "Start page for online library"
+        },
+        {
+            "name":"books",
+            "description":"Access to books"
+        },
+        {
+            "name":"users",
+            "description":"Operations about user"
+        },
+        {
+            "name":"login",
+            "description":"Login for existing users"
+        },
+        {
+            "name":"logout",
+            "description":"Logout for existing users"
+        },
+        {
+            "name":"signup",
+            "description":"Adding new members to online library"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": ["home"],
+                "summary": "Get a home page",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/books": {
+            "get": {
+                "tags": ["books"],
+                "summary": "Get list of all books",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "page",
+                    "in": "query",
+                    "required": false,
+                    "description": "Page number for pagination",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["books"],
+                "summary": "Add new book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/books/add": {
+            "get": {
+                "tags": ["books"],
+                "summary": "Show form for adding new book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/books/edit/{isbn}": {
+            "get": {
+                "tags": ["books"],
+                "summary": "Show form for editing book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "isbn",
+                    "in": "path",
+                    "required": true,
+                    "description": "ISBN of book to edit",
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/books/{isbn}": {
+            "get": {
+                "tags": ["books"],
+                "summary": "Get a book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "isbn",
+                    "in":"path",
+                    "required":true,
+                    "description":"ISBN of book to show",
+                    "schema":{
+                        "type":"string"
+                    }
+                }],
+                "responses": {
+                    "200":{
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["books"],
+                "summary":"Update book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "isbn",
+                    "in":"path",
+                    "required":true,
+                    "description":"ISBN of book to show",
+                    "schema":{
+                        "type":"string"
+                    }
+                }],
+                "responses": {
+                    "200":{
+                        "description":"OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["books"],
+                "summary": "Delete book",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "isbn",
+                    "in": "path",
+                    "required": true,
+                    "description": "ISBN of book to delete",
+                    "schema": {
+                        "type": "string"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Get list of all users",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "page",
+                    "in": "query",
+                    "required": false,
+                    "description": "Page number for pagination",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post":{
+                "tags":["users"],
+                "summary":"Add new user",
+                "security": [
+                    {
+                    "authHandler": []
+                    },
+                    {
+                    "adminHandler":[]
+                    }
+                ],
+                "responses":{
+                    "201":{
+                        "description":"Created"
+                    },
+                    "400": {
+                        "description":"Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/users/add": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Show form for adding new user",
+                "security": [
+                    {
+                    "authHandler": []
+                    },
+                    {
+                    "adminHandler":[]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/users/{userid}/books": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Show books of specific user",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "userid",
+                        "in":"path",
+                        "required":true,
+                        "description":"User id of the user whose books are shown",
+                        "schema":{
+                            "type":"integer"
+                        }
+                    },
+                    {
+                        "name":"page",
+                        "in":"query",
+                        "required":false,
+                        "description":"Page number for pagination",
+                        "schema":{
+                            "type":"integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/users/edit/{userid}": {
+            "get": {
+                "tags":["users"],
+                "summary":"Show form for editing user",
+                "security": [
+                    {
+                    "authHandler": []
+                    },
+                    {
+                    "adminHandler":[]
+                    }
+                ],
+                "parameters": [{
+                    "name":"userid",
+                    "in":"path",
+                    "required":true,
+                    "description":"User id of the user to edit",
+                    "schema":{
+                        "type":"integer"
+                    }
+                }],
+                "responses":{
+                    "200":{
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/users/{userid}": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Show user",
+                "security": [
+                    {
+                    "authHandler": []
+                    }
+                ],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "required": true,
+                    "description": "User id of the user to show",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["users"],
+                "summary": "Delete user",
+                "security": [
+                    {
+                    "authHandler": []
+                    },
+                    {
+                    "adminHandler":[]
+                    }
+                ],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "required": true,
+                    "description": "User id of the user to delete",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "put":{
+                "tags": ["users"],
+                "summary": "Update user",
+                "security": [
+                    {
+                    "authHandler": []
+                    },
+                    {
+                    "adminHandler":[]
+                    }
+                ],
+                "parameters": [{
+                    "name": "userid",
+                    "in": "path",
+                    "required": true,
+                    "description": "User id of the user to update",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description":"Successful response"
+                    },
+                    "500": {
+                        "description":"Internal Server Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "get": {
+                "tags": ["signup"],
+                "summary": "Get a signup page",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            },
+            "post":{
+                "tags":["signup"],
+                "summary":"Add new user",
+                "responses":{
+                    "201":{
+                        "description":"Created"
+                    },
+                    "400": {
+                        "description":"Bad Request"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "get": {
+                "tags": ["login"],
+                "summary": "Get a login page",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            },
+            "post":{
+                "tags":["login"],
+                "summary":"Login user",
+                "responses":{
+                    "200":{
+                        "description":"Successful response"
+                    },
+                    "400": {
+                        "description":"Bad Request"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "tags": ["logout"],
+                "summary": "Log user out",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Book": {
+                "type":"object",
+                "properties": {
+                    "isbn": {
+                        "type":"string",
+                        "format":"int64",
+                        "example":"0698114078"
+                    },
+                    "title": {
+                        "type":"string",
+                        "example":"Ivica i Marica"
+                    },
+                    "author": {
+                        "type":"string",
+                        "example":"Brothers Grimm"
+                    },
+                    "yearofpublication": {
+                        "type":"integer",
+                        "example":"1988"
+                    },
+                    "publisher": {
+                        "type":"string",
+                        "example":"Delmar Learning"
+                    },
+                    "imageurls": {
+                        "type":"string",
+                        "example":"http://images.amazon.com/images/P/0195153448.01.THUMBZZZ.jpg"
+                    },
+                    "imageurlm": {
+                        "type":"string",
+                        "example":"http://images.amazon.com/images/P/0195153448.01.MZZZZZZZ.jpg"
+                    },
+                    "imageurll": {
+                        "type":"string",
+                        "example":"http://images.amazon.com/images/P/0195153448.01.LZZZZZZZ.jpg"
+                    }
+                }
+            },
+            "User": {
+                "type":"object",
+                "properties": {
+                    "userid": {
+                        "type":"integer",
+                        "format":"int64",
+                        "example":"1"
+                    },
+                    "location": {
+                        "type":"string",
+                        "example":"stockton, california, usa"
+                    },
+                    "age": {
+                        "type":"string",
+                        "example":"18"
+                    },
+                    "username": {
+                        "type":"string",
+                        "example":"zeljko"
+                    },
+                    "password": {
+                        "type":"string",
+                        "example":"12345678"
+                    },
+                    "email": {
+                        "type":"string",
+                        "example":"john@doe"
+                    },
+                    "role": {
+                        "type":"string",
+                        "example":"user"
+                    }
+                }
+            },
+            "Rating": {
+                "type":"object",
+                "properties": {
+                    "userid":{
+                        "type":"integer",
+                        "format":"int64",
+                        "example":"1"
+                    },
+                    "isbn":{
+                        "type":"string",
+                        "example":"0698114078"
+                    },
+                    "rating": {
+                        "type":"integer",
+                        "format":"int64",
+                        "example":"10"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+          "authHandler": {
+            "type": "apiKey",
+            "in": "cookie",
+            "name": "library-cookie"
+          },
+          "adminHandler": {
+            "type": "apiKey",
+            "in": "cookie",
+            "name": "library-cookie"
+          }
+        }
+    }
+  }
+  

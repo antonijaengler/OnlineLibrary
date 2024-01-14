@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="shortcut icon" type="image/png" href="/images/book_icon.png" />
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <div class="container centered-container">
+        <h1 class="main-color-emphasized">Online library</h1>
+        <h4 class="main-color-emphasized">Here you can add book to your library.</h4>
+    </div>
+
+    <section class="section secondary-color-bg">
+        <div class="container centered-container">
+            <h1 class="font-secondary main-color-emphasized">
+                New Book
+            </h1>
+            
+            <form action="/api/books" method="post" class="form gutter">
+                <fieldset class="form-fieldset">
+                    <legend class="form-legend">Book registration form</legend>
+
+                    <div class="form-group">
+                        <label class="form-label" for="isbn">ISBN:</label>
+                        <input class="form-component form-input" type="text" name="isbn" id="isbn" maxlength="10"
+                                minlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="title">Title:</label>
+                        <input class="form-component form-input" type="text" name="title" id="title" minlength="4" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="author">Author:</label>
+                        <input class="form-component form-input" type="text" minlength="2" id="author" name="author" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="yearofpublication">Year of publication:</label>
+                        <input class="form-component form-input" type="number" maxlength="4" minlength="4" 
+                                id="yearofpublication" name="yearofpublication" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="publisher">Publisher:</label>
+                        <input class="form-component form-input" type="text" minlength="1" id="publisher" name="publisher" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="imageurls">Image URL small:</label>
+                        <input class="form-component form-input" type="text" id="imageurls" name="imageurls">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="imageurlm">Image URL medium:</label>
+                        <input class="form-component form-input" type="text" id="imageurlm" name="imageurlm">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="imageurll">Image URL large:</label>
+                        <input class="form-component form-input" type="text" id="imageurll" name="imageurll">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="rating">Rating:</label>
+                        <input class="form-component form-input" type="number" id="rating" name="rating">
+                    </div>
+
+                    <input class="button" type="submit">
+                    <input class="button" type="reset">
+
+                    <% if (err !== undefined ) { %>
+                        <p class="alert alert-danger"><%= err %></p>
+                    <% } %>
+
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>

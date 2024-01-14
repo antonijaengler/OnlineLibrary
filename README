@@ -1,0 +1,3 @@
+Pokretanje aplikacije: node . (npm start)
+Nakon toga se kopira link na kojem se vrti aplikacija. 
+Automatizirano testiranje: npm test

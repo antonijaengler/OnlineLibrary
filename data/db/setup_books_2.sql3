@@ -1,0 +1,14 @@
+--DROP TABLE books;
+
+CREATE TABLE books (isbn TEXT PRIMARY KEY NOT NULL, 
+                    title TEXT NOT NULL,
+                    author TEXT NOT NULL, 
+                    yearofpublication INTEGER NOT NULL,
+                    publisher TEXT NOT NULL,
+                    imageurls TEXT,
+                    imageurlm TEXT,
+                    imageurll TEXT);
+
+.mode csv
+.separator ;
+.import 'C:/VS Code/APUW/lab1/data/books_data/books_no_header.csv' books

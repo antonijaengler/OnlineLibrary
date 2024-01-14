@@ -1,0 +1,16 @@
+<header class="header primary-color-bg">
+    <nav class="navigation container">
+        <div class="menu">
+            <a href="/api" class="link menu-item">Home</a>
+            <% if(user !== undefined) {%>
+            <a href="/api/books" class="link menu-item">Books</a>
+            <a href="/api/users" class="link menu-item">Users</a>
+            <a href="/api/logout" class="link menu-item">Logout</a>
+            <% } %>
+            <% if(user === undefined) {%>
+            <a href="/api/login" class="link menu-item">Login</a>
+            <a href="/api/signup" class="link menu-item">Sign up</a>
+            <% } %>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="shortcut icon" type="image/png" href="/images/book_icon.png" />
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <div class="container centered-container">
+        <h1 class="main-color-emphasized">Online library</h1>
+    </div>
+
+    <div class="container container-half">
+        <div class="left-half">
+            <% if (book.imageurll !== 'undefined' && book.imageurll !== '') { %>
+                <img src="<%= book.imageurll %>" alt="<%= book.title %>" class="rounded-image">
+            <% } else { %>
+                <img src="/images/book_cover.png" alt="<%= book.title %>" class="rounded-image">
+            <% } %>
+        </div>
+        <div class="right-half">
+            <h4 class="main-color-emphasized description"><span class="main-color-dark">Title: </span> <%= book.title %></h4>
+            <h4 class="main-color-emphasized description"><span class="main-color-dark">Author: </span><%= book.author %></h4>
+            <h4 class="main-color-emphasized description"><span class="main-color-dark">Year of publication: </span><%= book.yearofpublication %></h4>
+            <h4 class="main-color-emphasized description"><span class="main-color-dark">Publisher: </span><%= book.publisher %></h4>
+            <h4 class="main-color-emphasized description"><span class="main-color-dark">Average rating: </span><%= book.averagerating %></h4>
+        </div>
+    </div>
+
+    <div class="container centered-container">
+        <div class="button-group"> 
+            <form method="POST" action="/api/books/<%= book.isbn %>?_method=DELETE">
+                <a href="/api/books/edit/<%= book.isbn %>" class="button">Edit</a>
+                <button class="button" type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>

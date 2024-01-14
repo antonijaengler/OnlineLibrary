@@ -1,0 +1,21 @@
+DROP TABLE users;
+
+CREATE TABLE users (userid INTEGER PRIMARY KEY NOT NULL,
+                    location TEXT NOT NULL,
+                    age INTEGER);
+
+ALTER TABLE users
+ADD username TEXT;
+
+ALTER TABLE users
+ADD password TEXT;
+
+ALTER TABLE users
+ADD email TEXT;
+
+ALTER TABLE users
+ADD role TEXT;
+
+.mode csv
+.separator ;
+.import 'C:/VS Code/APUW/lab1/data/books_data/users_no_header.csv' users

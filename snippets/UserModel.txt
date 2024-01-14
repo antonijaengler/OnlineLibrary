@@ -1,0 +1,139 @@
+const sqlite3 = require('sqlite3').verbose();
+
+module.exports = class User {
+
+    constructor(username, password, location, age, email) {
+        this.userid = undefined;
+        this.username = username;
+        this.password = password;
+        this.location = location;
+        this.age = age;
+        this.email = email;
+    }
+
+    static async getUserByUsername(username) {
+        let result = await dbGetUserByUsername(username);
+        let newUser = new User();
+
+        if(result.lenght > 0) {
+            newUser = newUser(result.username, result.password, result.location, result.age, result.email);
+            newUser.userid = result.userid;
+        }
+
+        return newUser;
+    }
+
+    static async getUserByEmail(email) {
+        let result = await dbGetUserByEmail(email);
+        let newUser = new User();
+
+        if(result.lenght > 0) {
+            newUser = new User(result.username, result.password, result.location, result.age, result.email);
+            newUser.userid = result.userid;
+        }
+
+        return newUser;
+    }
+
+    async add() {
+        this.userid = await dbAddUser(this);
+    }
+}
+
+async function dbGetUserByUsername(username) {
+    return new Promise((resolve, reject) => {
+        // open the database
+        let db = new sqlite3.Database('./data/db/database.db', sqlite3.OPEN_READ, (err) => {
+            if (err) {
+                console.log("Error" + err.message);
+                reject(err);
+            }
+            console.log('Connected to the database.');
+        });
+
+        try {
+            db.get(`SELECT userid, location, age, username, password, email FROM users WHERE username = ${username}`, (err, row) => {
+                if (err) {
+                    console.error(err.message);
+                    reject(err);
+                }
+    
+                resolve(row);
+            });
+        } catch (err){
+            console.log(err);
+            throw err;
+        }
+
+        // close database
+        db.close((err) => {
+            if (err) {
+                console.log(err.message);
+            }
+            console.log('Close the database connection.');
+        });
+    });
+}
+
+async function dbGetUserByEmail(email) {
+    return new Promise((resolve, reject) => {
+        // open the database
+        let db = new sqlite3.Database('./data/db/database.db', sqlite3.OPEN_READ, (err) => {
+            if (err) {
+                console.log("Error" + err.message);
+                reject(err);
+            }
+            console.log('Connected to the database.');
+        });
+
+        db.get(`SELECT userid, location, age, username, password, email FROM users WHERE email = ${email}`, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            }
+
+            resolve(row);
+        });
+
+        // close database
+        db.close((err) => {
+            if (err) {
+                console.log(err.message);
+            }
+            console.log('Close the database connection.');
+        });
+    });
+}
+
+async function dbAddUser(user) {
+    return new Promise((resolve, reject) => {
+        // open the database
+        let db = new sqlite3.Database('./data/db/database.db', sqlite3.OPEN_READ, (err) => {
+            if (err) {
+                console.log("Error" + err.message);
+                reject(err);
+            }
+            console.log('Connected to the database.');
+        });
+
+        console.log(user);
+        db.get(`INSERT INTO users (username, password, location, age, email)
+                VALUES ('${user.username}', '${user.password}', '${user.location}', ${parseInt(user.age)}, '${user.email}')
+                RETURNING userid`, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            }
+
+            resolve(this.lastID);
+        });
+
+        // close database
+        db.close((err) => {
+            if (err) {
+                console.log(err.message);
+            }
+            console.log('Close the database connection.');
+        });
+    });
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="shortcut icon" type="image/png" href="/images/book_icon.png" />
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <div class="container centered-container">
+        <h1 class="main-color-emphasized">Online library</h1>
+        <h4 class="main-color-emphasized">Here you can edit user in your library.</h4>
+    </div>
+
+    <section class="section secondary-color-bg">
+        <div class="container centered-container">
+            
+            <form action="/api/users/<%= specificUser.userid %>?_method=PUT" method="post" class="form gutter">
+                <fieldset class="form-fieldset">
+                    <legend class="form-legend">User form</legend>
+
+                    <div class="form-group">
+                        <label class="form-label" for="userid">User id:</label>
+                        <input class="form-component form-input" type="text" name="userid" id="userid" required readonly value="<%= specificUser.userid %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username:</label>
+                        <input class="form-component form-input" type="text" name="username" id="username" required value="<%= specificUser.username %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-mail:</label>
+                        <input class="form-component form-input" type="text" minlength="2" id="email" name="email" required value="<%= specificUser.email %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="location">Location:</label>
+                        <input class="form-component form-input" type="text" id="location" name="location" value="<%= specificUser.location %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="age">Age:</label>
+                        <input class="form-component form-input" type="number" minlength="1" id="age" name="age" value="<%= specificUser.age %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password:</label>
+                        <input class="form-component form-input" type="text" id="password" name="password" value="<%= specificUser.password %>">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="role">Role:</label>
+                        <input class="form-component form-input" type="text" minlength="1" id="role" name="role" value="<%= specificUser.role %>">
+                    </div>
+
+                    <input class="button" type="submit">
+                    <input class="button" type="reset">
+
+                    <% if (err !== undefined ) { %>
+                        <p class="alert alert-danger"><%= err %></p>
+                    <% } %>
+
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>

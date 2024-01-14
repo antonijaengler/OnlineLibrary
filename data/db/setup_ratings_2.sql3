@@ -1,0 +1,10 @@
+DROP TABLE ratings;
+
+CREATE TABLE ratings (userid INTEGER NOT NULL, 
+                        isbn TEXT NOT NULL,
+                        rating INTEGER,
+                        PRIMARY KEY (userid, isbn));
+
+.mode csv
+.separator ;
+.import 'C:/VS Code/APUW/lab1/data/books_data/ratings_no_header.csv' ratings

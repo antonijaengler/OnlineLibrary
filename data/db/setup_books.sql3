@@ -1,0 +1,9 @@
+--.mode csv
+--.separator ;
+--.import 'C:/VS Code/APUW/lab1/data/books_data/books.csv' books
+
+--ALTER TABLE books
+--ADD PRIMARY KEY (ISBN);
+
+ALTER TABLE books
+MODIFY COLUMN 'Year-Of-Publication' NEW_DATA_TYPE;

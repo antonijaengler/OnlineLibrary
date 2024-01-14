@@ -1,0 +1,32 @@
+const supertest = require('supertest');
+const session = require('supertest-session');
+const app = require('../server.js');
+const { beforeEach } = require('node:test');
+
+const request = supertest(app);
+const testSession = session(app);
+
+describe("GET /api", function() {
+    it("OK, showing home page", (done) => {
+        request.get('/api').expect(200, done());
+    });
+});
+
+describe("GET /api/books", function() {
+    it("Doesn't show books if there is no user signed in", (done) => {
+        request.get('/api/books').expect(401, done());
+    });
+
+    it("Shows books with user johndoe1", async (done) => {
+        const loginResponse = await testSession.post('/api/login')
+                                        .set('Content-Type', 'application/json')
+                                        .send({username: "johndoe1", password1: "12345678"});
+
+        console.log(loginResponse.status);
+        console.log(loginResponse.body);
+        request
+            .get('/api/books')
+            .auth("johndoe1", "12345678")
+            .expect(200, done());
+    });
+});

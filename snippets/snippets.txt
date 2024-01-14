@@ -1,0 +1,67 @@
+router.get('/', (req, res) => {
+    (async() => {
+        let page = parseInt(req.params.page) || 1;
+        const pageSize = 10;
+        total = 10;
+        res.status(200);
+        res.render('books', {
+            title: 'Book list',
+            linkActive: 'home',
+            currentPage: page,
+            totalPages: total,
+            books: await getBooks()
+        });
+    })();
+});
+
+router.get('/', (req, res) => {
+    (async() => {
+        let page = 1;
+        const rowSize = 20;
+        let books = await getBooks();
+        let totalCount = Object.keys(books).length;
+        let total = Math.ceil(totalCount / rowSize);
+        res.status(200);
+        res.render('books', {
+            title: 'Book list',
+            linkActive: 'home',
+            currentPage: page,
+            totalPages: total,
+            totalCount: totalCount,
+            rowSize: rowSize,
+            books: books
+        });
+    })();
+});
+
+
+<div class="container-pag">
+        <div class="pagination">
+            <a href="/books?page=<%= Math.max(currentPage - 1, 1) %>">&laquo;</a>
+            <% for (let i = Math.max(1, currentPage - 1); i <= Math.min(currentPage + 10, totalPages - 1); i++) { %>
+                <a href="/books?page=<%= i %>" <%if (currentPage == i) {%> class="active" <% } %> ><%= i %></a>
+            <% } %>
+            <a href="/books?page=<%= Math.min(currentPage + 1, totalPages - 1) %>">&raquo;</a>
+        </div>
+    </div>
+
+
+router.get('/', (req, res) => {
+    (async() => {
+        let page = parseInt(req.query.page) || 1;
+        const rowSize = 20;
+        let books = await getNBooks(rowSize, (page-1) * rowSize);
+        let totalCount = Object.keys(books).length;
+        let total = Math.ceil(totalCount / rowSize);
+        res.status(200);
+        res.render('books', {
+            title: 'Book list',
+            linkActive: 'home',
+            currentPage: page,
+            totalPages: total,
+            totalCount: totalCount,
+            books: books,
+            rowSize: rowSize
+        });
+    })();
+});

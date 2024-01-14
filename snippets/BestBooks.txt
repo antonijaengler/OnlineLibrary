@@ -1,0 +1,38 @@
+static async getBestBooks() {
+        return new Promise((resolve, reject) => {
+            // open the database
+            let db = new sqlite3.Database('./data/db/database.db', sqlite3.OPEN_READ, (err) => {
+                if (err) {
+                    console.log("Error" + err.message);
+                    reject(err);
+                }
+                console.log('Connected to the database.');
+            });
+    
+            let best_books = [];
+    
+            db.serialize(() => {
+                db.each(`SELECT title, author, yearofpublication, publisher, imageurlm
+                        FROM ratings
+                        JOIN books ON ratings.isbn = books.isbn
+                        WHERE rating = 10
+                        LIMIT 10`, (err, row) => {
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    }
+                    best_books.push(row);
+                },
+                () => {
+                    resolve(best_books);
+                });
+            });
+    
+            db.close((err) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                console.log('Close the database connection.');
+            });
+        });
+    }
